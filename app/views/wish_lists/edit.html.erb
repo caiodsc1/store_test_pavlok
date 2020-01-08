@@ -86,7 +86,7 @@
         <%= form_tag charges_path, style: 'margin-left: auto' do %>
           <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                   data-key="<%= @stripe_publishable_key %>"
-                  data-description="Compra no valor de <%= @products_price %>."
+                  data-description="Compra em Shopping Cart."
                   data-amount="<%= @products_price %>"
                   data-locale="auto"></script>
         <% end %>
