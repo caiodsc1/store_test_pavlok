@@ -41,8 +41,6 @@ class StripeChargesServices
   end
 
   def create_charge(customer)
-    return true if order_amount <= 0
-
     Stripe::Charge.create(
         customer: customer.id,
         amount: order_amount,
