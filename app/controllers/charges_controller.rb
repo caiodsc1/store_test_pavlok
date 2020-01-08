@@ -13,6 +13,8 @@ class ChargesController < ApplicationController
 
     current_user.clear_cart
 
+    total = current_user.wish_list.products_total
+
     PaymentsNotificationMailer.notify_user(current_user, total, success).deliver_later
     PaymentsNotificationMailer.notify_admin(current_user, total, success).deliver_later
 
