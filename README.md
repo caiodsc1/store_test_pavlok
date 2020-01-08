@@ -21,7 +21,7 @@
 3. Create and Migrate Database
 
 	~~~ sh
-	rails db:create db:migrate
+	rails db:create db:migrate db:seed
 	~~~
 
 4. Fill the .env with your credentials
