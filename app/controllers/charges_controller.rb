@@ -13,8 +13,8 @@ class ChargesController < ApplicationController
 
     current_user.clear_cart
 
-    PaymentsNotificationMailer.notify_user(user, total, success).deliver_later
-    PaymentsNotificationMailer.notify_admin(user, total, success).deliver_later
+    PaymentsNotificationMailer.notify_user(current_user, total, success).deliver_later
+    PaymentsNotificationMailer.notify_admin(current_user, total, success).deliver_later
 
     redirect_to wish_list_edit_path
   end
