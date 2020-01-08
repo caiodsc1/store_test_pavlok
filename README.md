@@ -4,7 +4,7 @@
 
 ## Installation
 
-**Dependencies**: Before installation make sure you have PostgreSQL (tested with 9.5 and 11.5), Ruby (2.4.6) and Rails (5.2.3) installed. 
+**Dependencies**: Before installation make sure you have PostgreSQL (tested with 9.5 and 11.5), Ruby (2.5.1) and Rails (5.2.3) installed. 
 
 1. Clone the Project
 
@@ -24,7 +24,9 @@
 	rails db:create db:migrate
 	~~~
 
-4. Start the Application
+4. Fill the .env with your credentials
+
+5. Start the Application
 
 	~~~ sh
 	rails s
