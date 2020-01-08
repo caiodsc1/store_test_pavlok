@@ -1,0 +1,29 @@
+<% if wish_list.products.any? %>
+  <% wish_list.products.each do |product| %>
+    <div class="row" style="margin-bottom: 10px;">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-horizontal">
+            <div class="row" style="width: 100%;">
+              <div class="col-12 col-sm-12 col-md-4 col-lg4">
+                <img class="" style="width: 100%;" src="<%= product.productpicurl %>" alt="Card image cap">
+              </div>
+              <div class="card-body col-12 col-sm-12 col-md-8 co-lg-8" style="display: flex; flex-direction: column; justify-content: space-between">
+                <div><h4 class="card-title"><%= product.name %></h4>
+                  <p class="card-text"><%= number_to_currency product.price %></p>
+                </div>
+                <div style="margin-top: 15px;">
+                  <%= link_to product_destroy_wish_list_path(wish_list, product.id), method: :delete, format: :js, remote: true do %>
+                    <button data-product-id="<%= product.id %>" class="btn btn-danger float-right remove">Remove from wishlist <%= icon "fas", "times" %></button>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <p>Sua lista está vazia no momento!</p>
+<% end %>

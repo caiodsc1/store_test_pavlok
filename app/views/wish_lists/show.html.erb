@@ -1,0 +1,21 @@
+<h1>Show Wish List</h1>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @wish_list.name %>
+</p>
+
+<p>
+  <strong>Total items:</strong>
+  <%= @wish_list.total_items %>
+</p>
+
+<p>
+  <strong>Total price:</strong>
+  <%= @wish_list.total_price %>
+</p>
+
+<%= link_to 'Edit', edit_wish_list_path(@wish_list) %> |
+<%= link_to 'Back', wish_lists_path %>

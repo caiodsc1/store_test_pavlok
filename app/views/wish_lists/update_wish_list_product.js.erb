@@ -1,0 +1,3 @@
+$('#badge-counter')[0].dataset.value = "<%= @wish_list.products_count %>"
+$('#products-price')[0].textContent = "Total: <%= @wish_list.products_price %>"
+$('#wish-list').html("<%=j(render partial: 'wish_lists/wish_list_products', locals: {wish_list: @wish_list }) %>")

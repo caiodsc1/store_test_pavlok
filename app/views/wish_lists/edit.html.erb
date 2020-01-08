@@ -1,0 +1,104 @@
+<nav class="navbar fixed-top navbar-light bg-light">
+  <a class="navbar-brand" href="/">
+    <img src="<%= image_url('logo.png') %>" width="30" height="30" class="d-inline-block align-top" alt="">
+    Shopping Cart
+  </a>
+  <div class="form-inline my-2 my-lg-0">
+    <button id="create" class="btn btn-danger my-2 my-sm-0" type="button" data-toggle="modal" data-target="#modal-center" onclick="return this.children[0].dataset.value !== '0';"> <%= icon "fas", "gift" %>
+      Minha Lista <span id="badge-counter" class="badge badge-light" data-value="<%= @products_count %>"> </span>
+    </button>
+    <%= link_to "Sair", destroy_user_session_path, class: 'btn btn-danger my-2 my-sm-0', style: 'margin-left: 5px;' %>
+  </div>
+</nav>
+<main>
+  <div class="row" style="padding: 0 15px 15px 15px;">
+    <div class="col-12 col-sm-12 col-md-8 col-lg-8">
+      <div class="input-group mb-3">
+        <input id="search" onkeyup="if(event.keyCode === 13){ location.search = location_without(['search', 'sort', 'page']) + `&search=${this.value}` }" type="text" class="form-control" placeholder="<%= params[:category].present? ? "Pesquise um produto nesta categoria..." : "Pesquise um produto..." %>" aria-label="product-name" aria-describedby="basic-addon2" value="<%= params[:search] %>">
+        <div class="input-group-append">
+          <button onclick="location.search = location_without(['search', 'sort', 'page']) + `&search=${$('#search')[0].value}`" class="input-group-text" id="basic-addon2"><%= icon "fas", "search" %></button>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+      <div class="input-group mb-3">
+        <select onchange="location.search = location_without(['search', 'sort']) + this.value" class="custom-select" id="inputGroupSelect02">
+          <option value="&sort=cheap" <%= "selected" if params[:sort] == "cheap" %>>Mais barato</option>
+          <option value="&sort=expensive" <%= "selected" if params[:sort] == "expensive" %>>Mais caro</option>
+          <option value="" <%= "selected" unless %w(cheap expensive).include?(params[:sort]) %>>Por nome</option>
+        </select>
+        <div class="input-group-append">
+          <label class="input-group-text" for="inputGroupSelect02">Ordenar</label>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-12 col-md-4 col-lg-3" style="margin-bottom: 15px;">
+      <div id="permanent-menu" data-turbolinks-permanent>
+        <div class="list-group list-group-root well">
+          <a data-turbolinks="false" href="<%= wish_list_edit_path %>" class="list-group-item">
+            Todas as categorias
+            <span class="badge badge-light"><%= @categories.map { |e| e.products_count }.sum %></span>
+          </a>
+          <% @categories.each_with_index do |main, i| %>
+            <a href="<%= "#item-#{i}" %>" class="list-group-item" data-toggle="collapse">
+              <%= icon "fas", "chevron-right", class: "chevron", style: "color: rgb(89, 100, 105)" %> <%= main.name %>
+              <span class="badge badge-light"><%= main.products_count %></span>
+            </a>
+            <div data-parent="#permanent-menu" class="list-group collapse" id=<%= "item-#{i}" %>>
+              <% main.categories.each do |category| %>
+                <a class="list-group-item selectable" href="<%= category_edit_wish_lists_path(category) %>">
+                  <%= category.name %>
+                  <span class="badge badge-light category" style="tab-index: -1"><%= category.products_count %></span>
+                </a>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+
+      </div>
+    </div>
+    <div class="col-12 col-sm-12 col-md-8 col-lg-9">
+      <% if @products.empty? %>
+        <h4 style="font-weight: 400">Sua busca não retornou resultados!</h4>
+      <% end %>
+      <div class="card-columns">
+        <% @products.each do |product| %>
+          <div class="card">
+            <img src="<%= product.productpicurl %>" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title"><%= product.name %></h5>
+              <p class="card-text"><%= number_to_currency product.price %></p>
+              <a href="#" data-product-id="<%= product.id %>" onclick='add_to_wish_list({id: this.dataset.productId,
+                  name: this.parentElement.querySelector(".card-title").textContent}, "<%= wish_list_path(@wish_list.id) %>", "<%= form_authenticity_token %>"); return false;' class="btn btn-danger btn-block">Add to wishlist <%= icon "fas", "gift" %></a>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="modal fade" id="modal-center" tabindex="-1" role="dialog" aria-labelledby="modal-center-title" aria-hidden="true">
+  <div class="modal-dialog modal-md modal-lg modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="products-price"><%= "Total: #{(@products_price)}" %></h5>
+        <%= form_tag charges_path, style: 'margin-left: auto' do %>
+          <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                  data-key="<%= @stripe_publishable_key %>"
+                  data-description="A month's subscription"
+                  data-amount="<%= @products_price %>"
+                  data-locale="auto"></script>
+        <% end %>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="wish-list" class="modal-body">
+        <%= render partial: 'wish_lists/wish_list_products', locals: {wish_list: @wish_list} %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= paginate @products, theme: 'twitter-bootstrap-4', nav_class: "paginate" %>

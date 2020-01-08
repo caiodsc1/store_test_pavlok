@@ -1,0 +1,41 @@
+@import "bootstrap";
+@import "font-awesome-sprockets";
+@import "font-awesome";
+.card-columns {
+  @include media-breakpoint-only(lg) {
+    column-count: 3;
+  }
+  @include media-breakpoint-only(md) {
+    column-count: 2;
+  }
+  @include media-breakpoint-only(sm) {
+    column-count: 1;
+  }
+}
+
+.turbolinks-progress-bar {
+  height: 3px;
+  background-color: #dc3545;
+}
+
+.paginate > ul > li.page-item > * {
+  color: #dc3545;
+}
+
+.paginate > ul > li.page-item:not(.active) > *:hover {
+  color: #dc3545;
+}
+
+.paginate > ul > li.page-item > *:focus {
+  box-shadow: none;
+}
+
+.paginate > ul > li.page-item.active > * {
+  background: #dc3545 !important;
+  border-color: #dc3545 !important;
+}
+
+.paginate {
+  float: right;
+  margin-right: 15px;
+}

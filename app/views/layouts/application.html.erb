@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Shopping Cart</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <link rel="icon" href="<%= image_url('logo.png') %>">
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag controller_name rescue ''%>
+    <%= stylesheet_link_tag controller_name rescue ''%>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+  </head>
+
+  <body>
+  <div <%= devise_controller? ? 'class=container' : '' %>>
+    <%= yield %>
+  </div>
+  </body>
+</html>
